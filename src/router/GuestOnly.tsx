@@ -25,7 +25,9 @@ const GuestOnly = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if (loading) {
-    return <div>Memuat..</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">Memuat...</div>
+    );
   }
 
   if (session) {

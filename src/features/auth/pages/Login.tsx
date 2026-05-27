@@ -93,7 +93,7 @@ const Login = () => {
             Log in
           </button>
         </form>
-        <button
+        {/* <button
           type="button"
           className="w-full flex items-center gap-2 justify-center my-3 bg-white border border-gray-500/30 py-2.5 rounded-full text-gray-800"
         >
@@ -103,7 +103,7 @@ const Login = () => {
             alt="googleFavicon"
           />
           Log in with Google
-        </button>
+        </button> */}
       </div>
     </div>
   );
