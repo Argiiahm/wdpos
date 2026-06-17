@@ -3,14 +3,13 @@ import { MoreVertical, LogOut, Store, Sun, Moon } from "lucide-react";
 import MenuList from "./MenuList";
 import { supabase } from "../lib/supabase/client";
 import { useNavigate } from "react-router";
+import { useTheme } from "../providers/ThemeProvider";
 
 const Sidebar = () => {
   const [email, setEmail] = useState<string>("cashier@gmail.com");
   const [name, setName] = useState<string>("Cashier");
   const [showDropdown, setShowDropdown] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    return (localStorage.getItem("theme") as "light" | "dark") || "dark";
-  });
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,20 +22,8 @@ const Sidebar = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
-
   const handleLogout = async () => {
+
     await supabase.auth.signOut();
     navigate("/login", { replace: true });
   };
