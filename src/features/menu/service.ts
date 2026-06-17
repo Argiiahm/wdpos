@@ -73,5 +73,28 @@ export async function createOrder(
 
   if (itemsError) throw itemsError;
 
+  // 3. Decrement stock for each item's variant
+  for (const item of items) {
+    if (item.variant_id) {
+      // Get current stock
+      const { data: variantData, error: fetchError } = await supabase
+        .from("product_variants")
+        .select("stock")
+        .eq("id", item.variant_id)
+        .single();
+
+      if (!fetchError && variantData) {
+        const currentStock = variantData.stock || 0;
+        const newStock = Math.max(0, currentStock - item.qty);
+
+        // Update variant stock
+        await supabase
+          .from("product_variants")
+          .update({ stock: newStock })
+          .eq("id", item.variant_id);
+      }
+    }
+  }
+
   return orderId;
 }

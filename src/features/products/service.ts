@@ -92,7 +92,7 @@ export async function createProduct(
       name: v.name,
       price: parseFloat(v.price) || 0,
       discount_price: parseFloat(v.discount_price) || 0,
-      stock: v.stock,
+      stock: parseInt(v.stock, 10) || 0,
     }));
 
     const { error: variantError } = await supabase
@@ -167,7 +167,7 @@ export async function updateProduct(
       name: v.name,
       price: parseFloat(v.price) || 0,
       discount_price: parseFloat(v.discount_price) || 0,
-      stock: v.stock,
+      stock: parseInt(v.stock, 10) || 0,
     }));
 
     const { error: variantError } = await supabase
@@ -218,6 +218,20 @@ export async function updateProduct(
 // ==============================
 
 export async function deleteProduct(productId: string): Promise<void> {
+  // Check if product has been ordered first to prevent partial deletion bugs
+  const { count, error: countError } = await supabase
+    .from("order_items")
+    .select("*", { count: "exact", head: true })
+    .eq("product_id", productId);
+
+  if (countError) throw countError;
+  
+  if (count && count > 0) {
+    throw new Error(
+      "Produk tidak bisa dihapus karena sudah memiliki riwayat transaksi/pesanan. Silakan sunting produk saja."
+    );
+  }
+
   // Delete options first (cascade should handle option_values)
   const { error: optionError } = await supabase
     .from("product_options")

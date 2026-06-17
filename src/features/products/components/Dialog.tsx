@@ -57,7 +57,7 @@ const DialogProducts = ({
           name: v.name,
           price: String(v.price),
           discount_price: String(v.discount_price),
-          stock: v.stock,
+          stock: String(v.stock),
         })),
       );
 
@@ -95,7 +95,7 @@ const DialogProducts = ({
         name: "",
         price: "",
         discount_price: "",
-        stock: 0,
+        stock: "",
       },
     ]);
   };
@@ -107,7 +107,7 @@ const DialogProducts = ({
   const handleVariantChange = (
     variantId: string,
     field: keyof ProductFormVariant,
-    value: string | number,
+    value: string,
   ) => {
     setVariants(
       variants.map((variant) =>
@@ -247,12 +247,12 @@ const DialogProducts = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl">
+    <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4">
+      <div className="w-full max-w-2xl rounded-t-2xl sm:rounded-2xl bg-white shadow-none border-t sm:border border-gray-200 flex flex-col max-h-[90vh] sm:max-h-[85vh]">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-300 px-5 py-4">
+        <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 sm:px-5 sm:py-4">
           <div>
-            <h2 className="text-lg font-semibold">
+            <h2 className="text-lg font-semibold text-gray-900">
               {isEditMode ? "Edit Product" : "Add Product"}
             </h2>
 
@@ -262,14 +262,14 @@ const DialogProducts = ({
           <button
             onClick={onClose}
             disabled={loading}
-            className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-gray-100"
+            className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-900"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="max-h-[75vh] space-y-5 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 sm:space-y-5">
           {/* Error */}
           {error && (
             <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -279,7 +279,7 @@ const DialogProducts = ({
 
           {/* Product Info */}
           <div className="space-y-4 rounded-xl border border-gray-200 p-4">
-            <h3 className="font-medium">Product Information</h3>
+            <h3 className="font-medium text-gray-900">Product Information</h3>
 
             {/* Product Name */}
             <div>
@@ -297,7 +297,7 @@ const DialogProducts = ({
                   })
                 }
                 placeholder="Bakso Mercon"
-                className="h-11 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
+                className="h-11 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm"
               />
             </div>
 
@@ -317,7 +317,7 @@ const DialogProducts = ({
                   })
                 }
                 placeholder="Product description..."
-                className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-gray-500"
+                className="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 text-sm"
               />
             </div>
 
@@ -337,7 +337,7 @@ const DialogProducts = ({
                   })
                 }
                 placeholder="https://example.com/image.jpg"
-                className="h-11 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
+                className="h-11 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm"
               />
 
               {product.image_url && (
@@ -358,7 +358,7 @@ const DialogProducts = ({
           {/* Variants */}
           <div className="space-y-4 rounded-xl border border-gray-200 p-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">Variants</h3>
+              <h3 className="font-medium text-gray-900">Variants</h3>
 
               <button
                 onClick={handleAddVariant}
@@ -381,13 +381,13 @@ const DialogProducts = ({
                 className="space-y-3 rounded-xl border border-gray-200 p-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium text-gray-900">
                     Variant {index + 1}
                   </span>
 
                   <button
                     onClick={() => handleRemoveVariant(variant.id)}
-                    className="rounded p-1 hover:bg-gray-100"
+                    className="rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                   >
                     <X size={18} />
                   </button>
@@ -400,7 +400,7 @@ const DialogProducts = ({
                   onChange={(e) =>
                     handleVariantChange(variant.id, "name", e.target.value)
                   }
-                  className="h-10 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
+                  className="h-10 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm"
                 />
 
                 <div className="grid grid-cols-2 gap-3">
@@ -411,7 +411,7 @@ const DialogProducts = ({
                     onChange={(e) =>
                       handleVariantChange(variant.id, "price", e.target.value)
                     }
-                    className="h-10 rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
+                    className="h-10 rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm font-mono"
                   />
 
                   <input
@@ -425,7 +425,7 @@ const DialogProducts = ({
                         e.target.value,
                       )
                     }
-                    className="h-10 rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
+                    className="h-10 rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm font-mono"
                   />
                 </div>
 
@@ -437,10 +437,10 @@ const DialogProducts = ({
                     handleVariantChange(
                       variant.id,
                       "stock",
-                      Number(e.target.value),
+                      e.target.value,
                     )
                   }
-                  className="h-10 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
+                  className="h-10 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm font-mono"
                 />
               </div>
             ))}
@@ -449,7 +449,7 @@ const DialogProducts = ({
           {/* Options */}
           <div className="space-y-4 rounded-xl border border-gray-200 p-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">Options</h3>
+              <h3 className="font-medium text-gray-900">Options</h3>
 
               <button
                 onClick={handleAddOption}
@@ -472,13 +472,13 @@ const DialogProducts = ({
                 className="space-y-3 rounded-xl border border-gray-200 p-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium text-gray-900">
                     Option {index + 1}
                   </span>
 
                   <button
                     onClick={() => handleRemoveOption(option.id)}
-                    className="rounded p-1 hover:bg-gray-100"
+                    className="rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                   >
                     <X size={18} />
                   </button>
@@ -492,60 +492,62 @@ const DialogProducts = ({
                     handleOptionNameChange(option.id, e.target.value)
                   }
                   placeholder="Option name (e.g. Level Pedas)"
-                  className="h-10 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
+                  className="h-10 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm"
                 />
 
                 {/* Option Values */}
-                {option.values.map((value) => (
-                  <div
-                    key={value.id}
-                    className="grid grid-cols-[40px_1fr_120px] items-center gap-3"
-                  >
-                    <button
-                      onClick={() =>
-                        handleRemoveOptionValue(option.id, value.id)
-                      }
-                      type="button"
-                      className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-300 hover:bg-gray-50"
+                <div className="space-y-2">
+                  {option.values.map((value) => (
+                    <div
+                      key={value.id}
+                      className="flex gap-2 items-center w-full"
                     >
-                      <X size={16} />
-                    </button>
+                      <button
+                        onClick={() =>
+                          handleRemoveOptionValue(option.id, value.id)
+                        }
+                        type="button"
+                        className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-gray-300 hover:bg-gray-50 text-gray-500"
+                      >
+                        <X size={16} />
+                      </button>
 
-                    <input
-                      type="text"
-                      value={value.value}
-                      onChange={(e) =>
-                        handleOptionValueChange(
-                          option.id,
-                          value.id,
-                          "value",
-                          e.target.value,
-                        )
-                      }
-                      placeholder="Option value"
-                      className="h-10 rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
-                    />
+                      <input
+                        type="text"
+                        value={value.value}
+                        onChange={(e) =>
+                          handleOptionValueChange(
+                            option.id,
+                            value.id,
+                            "value",
+                            e.target.value,
+                          )
+                        }
+                        placeholder="Option value"
+                        className="h-10 flex-1 min-w-0 rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm"
+                      />
 
-                    <input
-                      type="number"
-                      value={value.extra_price}
-                      onChange={(e) =>
-                        handleOptionValueChange(
-                          option.id,
-                          value.id,
-                          "extra_price",
-                          e.target.value,
-                        )
-                      }
-                      placeholder="+ Price"
-                      className="h-10 rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500"
-                    />
-                  </div>
-                ))}
+                      <input
+                        type="number"
+                        value={value.extra_price}
+                        onChange={(e) =>
+                          handleOptionValueChange(
+                            option.id,
+                            value.id,
+                            "extra_price",
+                            e.target.value,
+                          )
+                        }
+                        placeholder="+ Price"
+                        className="h-10 w-24 sm:w-32 flex-shrink-0 rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm font-mono"
+                      />
+                    </div>
+                  ))}
+                </div>
 
                 <button
                   onClick={() => handleAddOptionValue(option.id)}
-                  className="text-sm text-gray-500 hover:text-black"
+                  className="text-sm text-gray-500 hover:text-black mt-1 inline-block"
                 >
                   + Add Value
                 </button>
@@ -555,11 +557,11 @@ const DialogProducts = ({
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 border-t border-gray-300 px-5 py-4">
+        <div className="flex justify-end gap-3 border-t border-gray-200 px-4 py-3 sm:px-5 sm:py-4 bg-gray-50/50 rounded-b-2xl">
           <button
             onClick={onClose}
             disabled={loading}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-100 disabled:opacity-50"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-100 disabled:opacity-50 text-gray-700 bg-white"
           >
             Cancel
           </button>

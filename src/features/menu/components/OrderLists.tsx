@@ -64,13 +64,13 @@ const OrderLists = ({
   };
 
   return (
-    <div className="flex h-screen flex-col border-l border-zinc-100 p-4">
+    <div className="flex h-screen flex-col border-l border-gray-200 p-4">
       {/* Header */}
       <div className="mb-4 flex items-center gap-2">
         <ShoppingBag size={18} className="text-zinc-500" />
         <h1 className="font-semibold">Order Lists</h1>
         {totalItems > 0 && (
-          <span className="ml-auto rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+          <span className="ml-auto rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 font-mono">
             {totalItems}
           </span>
         )}
@@ -109,12 +109,12 @@ const OrderLists = ({
 
       {/* Checkout */}
       {cartItems.length > 0 && (
-        <div className="border-t border-gray-100 pt-4 bg-white">
+        <div className="border-t border-gray-200 pt-4 bg-white">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-zinc-500">{totalItems} item</span>
+            <span className="text-zinc-500 font-mono">{totalItems} item</span>
             <div className="flex items-center gap-1">
               <span className="text-zinc-400">Subtotal:</span>
-              <span className="font-semibold">Rp {formatPrice(subtotal)}</span>
+              <span className="font-semibold font-mono">Rp {formatPrice(subtotal)}</span>
             </div>
           </div>
 

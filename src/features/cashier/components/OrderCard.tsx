@@ -99,17 +99,6 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
         );
       case "done":
       case "cancelled":
-        return (
-          <div className="flex gap-2 mt-3">
-            <button
-              onClick={() => onDelete(order)}
-              className="flex items-center justify-center gap-1.5 rounded-lg border border-zinc-200 px-3 py-2 text-xs text-zinc-500 hover:bg-zinc-50 transition w-full"
-            >
-              <Trash2 size={14} />
-              Hapus
-            </button>
-          </div>
-        );
       default:
         return null;
     }
@@ -117,64 +106,78 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
 
   return (
     <div
-      className={`border-2 rounded-xl p-4 w-full max-w-80 transition ${
+      className={`border rounded-xl p-4 w-full max-w-md mx-auto transition flex flex-col justify-between ${
         order.status === "done"
-          ? "border-green-200 bg-green-50/30"
+          ? "border-green-200 dark:border-green-900/30 bg-green-50/30 dark:bg-green-950/10"
           : order.status === "cancelled"
-            ? "border-red-100 bg-red-50/20 opacity-60"
+            ? "border-red-100 dark:border-red-900/20 bg-red-50/20 dark:bg-red-950/10 opacity-60"
             : order.status === "processing"
-              ? "border-blue-200 bg-blue-50/20"
-              : "border-zinc-100 hover:border-zinc-200"
+              ? "border-blue-200 dark:border-blue-900/20 bg-blue-50/20 dark:bg-blue-950/10"
+              : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700"
       }`}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2 text-zinc-500">
-          <Receipt size={18} />
-          <span className="text-sm font-medium">
-            PES-{formatTime(order.created_at)}
+      <div>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-zinc-100 dark:border-zinc-800/60">
+          <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
+            <Receipt size={18} />
+            <span className="text-sm font-medium font-mono">
+              PES-{formatTime(order.created_at)}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span
+              className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${statusInfo.color}`}
+            >
+              {statusInfo.label}
+            </span>
+            <button
+              type="button"
+              onClick={() => onDelete(order)}
+              className="text-zinc-400 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg shrink-0"
+              title="Hapus"
+            >
+              <Trash2 size={15} />
+            </button>
+          </div>
+        </div>
+
+        {/* Order Items */}
+        <div className="space-y-2 max-h-48 overflow-y-auto">
+          {order.order_items.map((item) => (
+            <div key={item.id} className="border-b border-zinc-100 dark:border-zinc-800/40 pb-2">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{item.product_name}</span>
+                <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono font-medium">{item.qty}x</span>
+              </div>
+              {item.variant_name && (
+                <span className="text-xs text-zinc-400 dark:text-zinc-500">{item.variant_name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        {/* Total */}
+        <div className="flex items-center justify-between mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">Subtotal</span>
+          <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100 font-mono">
+            Rp {formatPrice(order.total_price)}
           </span>
         </div>
-        <span
-          className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${statusInfo.color}`}
-        >
-          {statusInfo.label}
-        </span>
-      </div>
 
-      {/* Order Items */}
-      <div className="space-y-2 max-h-48 overflow-y-auto">
-        {order.order_items.map((item) => (
-          <div key={item.id} className="border-b border-zinc-100 pb-2">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-sm">{item.product_name}</span>
-              <span className="text-xs text-zinc-400">{item.qty}x</span>
-            </div>
-            {item.variant_name && (
-              <span className="text-xs text-zinc-400">{item.variant_name}</span>
-            )}
-          </div>
-        ))}
-      </div>
+        {/* Footer - Time */}
+        <div className="flex items-center gap-1.5 text-zinc-400 dark:text-zinc-500 mt-2.5">
+          <Clock size={12} className="text-green-500" />
+          <span className="text-xs font-mono">
+            {formatDate(order.created_at)} • {formatTime(order.created_at)}
+          </span>
+        </div>
 
-      {/* Total */}
-      <div className="flex items-center justify-between mt-3 pt-2 border-t border-zinc-100">
-        <span className="text-sm text-zinc-500">Subtotal</span>
-        <span className="font-semibold text-sm">
-          Rp {formatPrice(order.total_price)}
-        </span>
+        {/* Actions */}
+        {getActions()}
       </div>
-
-      {/* Footer - Time */}
-      <div className="flex items-center gap-1 text-zinc-400 mt-2">
-        <Clock size={12} className="text-green-500" />
-        <span className="text-xs">
-          {formatDate(order.created_at)} • {formatTime(order.created_at)}
-        </span>
-      </div>
-
-      {/* Actions */}
-      {getActions()}
     </div>
   );
 };

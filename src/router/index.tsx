@@ -4,6 +4,7 @@ import MenuPages from "../features/menu/pages/MenuPage";
 import Products from "../features/products/pages/Products";
 import CashierPage from "../features/cashier/pages/CashierPage";
 import Login from "../features/auth/pages/Login";
+import DashboardPage from "../features/dashboard/pages/DashboardPage";
 import ProtectedRoute from "./ProtectedRoute";
 import GuestOnly from "./GuestOnly";
 
@@ -12,7 +13,9 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <ProtectedRoute>
-        <Layout>Dashboard</Layout>,
+        <Layout>
+          <DashboardPage />
+        </Layout>
       </ProtectedRoute>
     ),
   },

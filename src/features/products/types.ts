@@ -56,7 +56,7 @@ export type ProductFormVariant = {
   name: string;
   price: string;
   discount_price: string;
-  stock: number;
+  stock: string;
 };
 
 export type ProductFormOptionValue = {

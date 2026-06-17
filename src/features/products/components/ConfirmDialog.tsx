@@ -21,7 +21,7 @@ const ConfirmDialog = ({
 
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-none border border-gray-200">
         {/* Icon */}
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
           <AlertTriangle className="text-red-600" size={24} />

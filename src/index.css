@@ -1,5 +1,151 @@
 @import "tailwindcss";
 
+@theme {
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
 body {
   font-family: "Plus Jakarta Sans", sans-serif;
+  @apply bg-slate-50 text-slate-900 transition-colors duration-200 antialiased;
+}
+
+html.dark body {
+  @apply bg-black text-zinc-100;
+}
+
+/* Vercel Dark Mode Overrides */
+html.dark .bg-white {
+  background-color: #0a0a0a !important; /* Lighter black card background for Vercel contrast */
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-50\/50,
+html.dark .bg-gray-50,
+html.dark .bg-gray-50\/50,
+html.dark .bg-zinc-50,
+html.dark .bg-zinc-50\/30,
+html.dark .bg-zinc-50\/20 {
+  background-color: #000000 !important; /* Pure black page background */
+}
+
+/* Status Cards Tint Overrides */
+html.dark .bg-green-50\/30 {
+  background-color: rgba(16, 185, 129, 0.08) !important;
+}
+html.dark .bg-red-50\/20 {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+}
+html.dark .bg-blue-50\/20 {
+  background-color: rgba(59, 130, 246, 0.08) !important;
+}
+
+html.dark .bg-slate-100,
+html.dark .bg-gray-100,
+html.dark .bg-zinc-100,
+html.dark .bg-zinc-100\/50,
+html.dark .bg-slate-50\/80,
+html.dark .bg-zinc-50\/50,
+html.dark .bg-emerald-50\/40 {
+  background-color: #121212 !important; /* Inner elements gray */
+}
+
+/* Borders */
+html.dark .border-gray-200,
+html.dark .border-gray-300,
+html.dark .border-zinc-200,
+html.dark .border-zinc-300,
+html.dark .border-slate-200,
+html.dark .border-gray-100,
+html.dark .border-t,
+html.dark .border-b,
+html.dark .border-r,
+html.dark .border-l,
+html.dark .border {
+  border-color: #3f3f46 !important; /* zinc-700 */
+}
+
+/* Inputs & Textareas */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #000000 !important;
+  border-color: #3f3f46 !important; /* zinc-700 */
+  color: #ffffff !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  border-color: #a1a1aa !important;
+}
+
+/* Text primary */
+html.dark .text-slate-800,
+html.dark .text-slate-900,
+html.dark .text-gray-900,
+html.dark .text-zinc-900,
+html.dark .text-zinc-800,
+html.dark .text-gray-800,
+html.dark .text-slate-700,
+html.dark .text-gray-700,
+html.dark .text-zinc-700 {
+  color: #ffffff !important;
+}
+
+/* Text secondary */
+html.dark .text-slate-500,
+html.dark .text-slate-400,
+html.dark .text-gray-500,
+html.dark .text-zinc-500,
+html.dark .text-gray-400,
+html.dark .text-zinc-400,
+html.dark .text-slate-400 {
+  color: #888888 !important;
+}
+
+/* Hover effects */
+html.dark .hover\:bg-gray-50:hover,
+html.dark .hover\:bg-zinc-50:hover,
+html.dark .hover\:bg-slate-50:hover,
+html.dark .hover\:bg-slate-50\/50:hover,
+html.dark .hover\:bg-gray-100:hover,
+html.dark .hover\:bg-zinc-100:hover,
+html.dark .hover\:bg-slate-100:hover,
+html.dark .hover\:bg-zinc-50\/50:hover,
+html.dark .hover\:bg-zinc-900:hover {
+  background-color: #0c0c0d !important;
+}
+
+html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-zinc-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #3f3f46 !important; /* zinc-700 */
+}
+
+/* Custom scrollbars for dark mode */
+html.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #3f3f46; /* zinc-700 */
+  border-radius: 4px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #52525b; /* zinc-600 */
+}
+
+/* Hover border color overrides in dark mode */
+html.dark .hover\:border-zinc-300:hover,
+html.dark .hover\:border-gray-300:hover,
+html.dark .hover\:border-zinc-400:hover,
+html.dark .hover\:border-gray-400:hover {
+  border-color: #52525b !important; /* zinc-600 */
 }

@@ -12,7 +12,7 @@ const ListOrder = ({ item, onRemove, onUpdateQty }: ListOrderProps) => {
   const subtotal = item.basePrice * item.qty;
 
   return (
-    <div className="border-b border-zinc-100 pb-3">
+    <div className="border-b border-gray-200 pb-3">
       {/* Header row */}
       <div className="flex justify-between items-start gap-2">
         <div className="flex-1 min-w-0">
@@ -35,7 +35,7 @@ const ListOrder = ({ item, onRemove, onUpdateQty }: ListOrderProps) => {
           {item.options.map((opt, idx) => (
             <span
               key={idx}
-              className="text-[11px] bg-zinc-100 text-zinc-500 rounded px-1.5 py-0.5"
+              className="text-[11px] bg-zinc-100 text-zinc-500 rounded px-1.5 py-0.5 font-mono"
             >
               {opt.valueName}
               {opt.extraPrice > 0 && ` +${formatPrice(opt.extraPrice)}`}
@@ -53,7 +53,7 @@ const ListOrder = ({ item, onRemove, onUpdateQty }: ListOrderProps) => {
           >
             <Minus size={12} />
           </button>
-          <span className="text-sm font-medium w-5 text-center">
+          <span className="text-sm font-medium w-5 text-center font-mono">
             {item.qty}
           </span>
           <button
@@ -63,7 +63,7 @@ const ListOrder = ({ item, onRemove, onUpdateQty }: ListOrderProps) => {
             <Plus size={12} />
           </button>
         </div>
-        <span className="text-sm font-medium">
+        <span className="text-sm font-medium font-mono">
           Rp {formatPrice(subtotal)}
         </span>
       </div>
