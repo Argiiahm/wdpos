@@ -89,7 +89,7 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
         await navigator.share({
           files: [file],
           title: `Invoice PES-${formatTime(order.created_at)}`,
-          text: `Detail pesanan SimplePos untuk PES-${formatTime(order.created_at)}`,
+          text: `Detail pesanan WarungDadakan untuk PES-${formatTime(order.created_at)}`,
         });
       } else {
         // Fallback: download
@@ -276,8 +276,8 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
           {/* Captured card - structurally and visually identical to the live card */}
           <div
             className={`border rounded-2xl p-6 w-full shadow-2xl transition flex flex-col justify-between ${isDark
-                ? "bg-[#18181b] border-zinc-800 text-zinc-100"
-                : "bg-white border-zinc-200/80 text-zinc-900 shadow-[0_20px_50px_rgba(15,23,42,0.05)]"
+              ? "bg-[#18181b] border-zinc-800 text-zinc-100"
+              : "bg-white border-zinc-200/80 text-zinc-900 shadow-[0_20px_50px_rgba(15,23,42,0.05)]"
               }`}
           >
             <div>

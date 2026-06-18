@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MoreVertical, LogOut, Store, Sun, Moon } from "lucide-react";
+import { MoreVertical, LogOut, Sun, Moon } from "lucide-react";
 import MenuList from "./MenuList";
 import { supabase } from "../lib/supabase/client";
 import { useNavigate } from "react-router";
@@ -33,10 +33,8 @@ const Sidebar = () => {
       <div className="flex flex-1 flex-col gap-1 p-2">
         <div className="flex-1">
           <div className="hidden lg:flex items-center gap-2 mb-6 px-1">
-            <div className="p-1.5 bg-indigo-600 rounded-lg text-white">
-              <Store className="h-5 w-5" />
-            </div>
-            <span className="font-bold text-lg text-slate-800 dark:text-zinc-100">SimplePos</span>
+            <img src="/image/wd.png" alt="Logo WarungDadakan" className="w-8 h-8 object-contain rounded-lg shadow-sm" />
+            <span className="font-bold text-lg text-slate-800 dark:text-zinc-100">WarungDadakan</span>
           </div>
 
           <div className="border-l border-gray-200 dark:border-zinc-800 pl-4 flex flex-col gap-3">

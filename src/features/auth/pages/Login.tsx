@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../../lib/supabase/client";
-import { Store, Loader2, Lock, Mail } from "lucide-react";
+import { Loader2, Lock, Mail } from "lucide-react";
 import * as v from "valibot";
 import { useNavigate } from "react-router";
 
@@ -73,12 +73,12 @@ const Login = () => {
       <div className="w-full max-w-md bg-white dark:bg-zinc-900/40 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 shadow-xl flex flex-col items-center">
         {/* Logo and Header */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="p-3 bg-indigo-600 dark:bg-indigo-500 rounded-2xl text-white shadow-lg shadow-indigo-600/20 mb-4">
-            <Store className="h-8 w-8" />
+          <div className="mb-4">
+            <img src="/image/wd.png" alt="Logo WarungDadakan" className="w-16 h-16 object-contain rounded-2xl shadow-md" />
           </div>
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Selamat Datang</h1>
           <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-1.5 max-w-[280px]">
-            Masuk ke akun SimplePos untuk melayani pelanggan anda
+            Masuk ke akun WarungDadakan untuk melayani pelanggan anda
           </p>
         </div>
 

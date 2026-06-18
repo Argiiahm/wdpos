@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
-import { Menu, X, Store } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 
 const CashierLayout = ({ children }: { children: React.ReactNode }) => {
@@ -17,10 +17,8 @@ const CashierLayout = ({ children }: { children: React.ReactNode }) => {
       {/* Mobile Header */}
       <header className="lg:hidden flex items-center justify-between px-4 py-3 bg-white dark:bg-black border-b border-gray-200 dark:border-zinc-800 sticky top-0 z-40 w-full">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-indigo-600 rounded-lg text-white">
-            <Store className="h-5 w-5" />
-          </div>
-          <span className="font-bold text-lg text-slate-800 dark:text-zinc-100">SimplePos</span>
+          <img src="/image/wd.png" alt="Logo WarungDadakan" className="w-8 h-8 object-contain rounded-lg shadow-sm" />
+          <span className="font-bold text-lg text-slate-800 dark:text-zinc-100">WarungDadakan</span>
         </div>
         <button
           onClick={() => setIsSidebarOpen(true)}
@@ -40,17 +38,14 @@ const CashierLayout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-72 bg-white dark:bg-black transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:w-64 lg:z-auto border-r border-gray-200 dark:border-zinc-800 flex flex-col ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 bottom-0 left-0 z-50 w-72 bg-white dark:bg-black transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:w-64 lg:z-auto border-r border-gray-200 dark:border-zinc-800 flex flex-col ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         {/* Mobile Sidebar Close Header */}
         <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-zinc-800 shrink-0">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-indigo-600 rounded-lg text-white">
-              <Store className="h-5 w-5" />
-            </div>
-            <span className="font-bold text-lg text-slate-800 dark:text-zinc-100">SimplePos</span>
+            <img src="/image/wd.png" alt="Logo WarungDadakan" className="w-8 h-8 object-contain rounded-lg shadow-sm" />
+            <span className="font-bold text-lg text-slate-800 dark:text-zinc-100">WarungDadakan</span>
           </div>
           <button
             onClick={() => setIsSidebarOpen(false)}
