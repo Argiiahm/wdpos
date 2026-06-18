@@ -149,3 +149,12 @@ html.dark .hover\:border-zinc-400:hover,
 html.dark .hover\:border-gray-400:hover {
   border-color: #52525b !important; /* zinc-600 */
 }
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
