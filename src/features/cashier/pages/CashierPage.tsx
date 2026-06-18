@@ -93,9 +93,15 @@ const CashierPage = () => {
   // ==============================
 
   const getCountForStatus = (status: OrderStatus | "all") => {
-    if (status === "all") return orders.length;
+    if (status === "all") {
+      return orders.filter((o) => o.status === "pending" || o.status === "processing").length;
+    }
     return orders.filter((o) => o.status === status).length;
   };
+
+  const displayedOrders = activeFilter === "all"
+    ? orders.filter((o) => o.status === "pending" || o.status === "processing")
+    : orders;
 
   return (
     <section>
@@ -170,18 +176,18 @@ const CashierPage = () => {
           <Loader2 size={32} className="animate-spin mb-3" />
           <span className="text-sm">Memuat pesanan...</span>
         </div>
-      ) : orders.length === 0 ? (
+      ) : displayedOrders.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-zinc-400">
           <Receipt size={48} className="mb-3 text-zinc-300" />
           <p className="text-sm font-medium">
             {activeFilter === "all"
-              ? "Belum ada pesanan."
+              ? "Belum ada pesanan aktif hari ini."
               : `Tidak ada pesanan dengan status "${statusFilters.find((f) => f.key === activeFilter)?.label}".`}
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-          {orders.map((order) => (
+          {displayedOrders.map((order) => (
             <OrderCard
               key={order.id}
               order={order}

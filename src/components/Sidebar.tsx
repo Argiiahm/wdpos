@@ -43,7 +43,9 @@ const Sidebar = () => {
             <MenuList label="Dashboard" to="/" />
             <MenuList label="Menu" to="/Menu" />
             <MenuList label="Cashier" to="/cashier" />
+            <MenuList label="Finance" to="/finance" />
             <MenuList label="Products" to="/products" />
+            <MenuList label="Settings" to="/settings" />
           </div>
         </div>
 

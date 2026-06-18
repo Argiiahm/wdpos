@@ -39,6 +39,32 @@ const DialogProducts = ({
   // UI State
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [imageInputMethod, setImageInputMethod] = useState<"upload" | "url">("upload");
+
+  const handleProductImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("File harus berupa gambar.");
+      return;
+    }
+
+    if (file.size > 1.2 * 1024 * 1024) {
+      setError("Ukuran file gambar maksimal 1.2MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      setProduct((prev) => ({
+        ...prev,
+        image_url: base64,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
 
   const isEditMode = !!editProduct;
 
@@ -50,6 +76,10 @@ const DialogProducts = ({
         description: editProduct.description,
         image_url: editProduct.image_url ?? "",
       });
+
+      setImageInputMethod(
+        editProduct.image_url?.startsWith("data:") ? "upload" : "url"
+      );
 
       setVariants(
         editProduct.product_variants.map((v) => ({
@@ -75,6 +105,7 @@ const DialogProducts = ({
     } else {
       // Reset form for create mode
       setProduct({ name: "", description: "", image_url: "" });
+      setImageInputMethod("upload");
       setVariants([]);
       setOptions([]);
     }
@@ -321,35 +352,111 @@ const DialogProducts = ({
               />
             </div>
 
-            {/* Image URL */}
-            <div>
-              <label className="mb-2 block text-sm text-gray-600">
-                Image URL
+            {/* Product Image */}
+            <div className="space-y-3">
+              <label className="block text-sm text-gray-600">
+                Product Image
               </label>
+              
+              <div className="grid grid-cols-2 gap-2 p-1 bg-gray-100 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setImageInputMethod("upload")}
+                  className={`py-1.5 px-3 rounded-md text-xs font-semibold transition-all ${
+                    imageInputMethod === "upload"
+                      ? "bg-white text-gray-900 shadow-xs"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  Upload File
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setImageInputMethod("url")}
+                  className={`py-1.5 px-3 rounded-md text-xs font-semibold transition-all ${
+                    imageInputMethod === "url"
+                      ? "bg-white text-gray-900 shadow-xs"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  Image URL
+                </button>
+              </div>
 
-              <input
-                type="url"
-                value={product.image_url}
-                onChange={(e) =>
-                  setProduct({
-                    ...product,
-                    image_url: e.target.value,
-                  })
-                }
-                placeholder="https://example.com/image.jpg"
-                className="h-11 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm"
-              />
-
-              {product.image_url && (
-                <div className="mt-2">
-                  <img
-                    src={product.image_url}
-                    alt="Preview"
-                    className="h-20 w-20 rounded-lg border border-gray-200 object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
+               {imageInputMethod === "upload" ? (
+                product.image_url ? (
+                  <div className="relative border border-gray-200 rounded-xl p-3 bg-zinc-50 flex items-center gap-3">
+                    <img
+                      src={product.image_url}
+                      alt="Preview"
+                      className="h-16 w-16 rounded-lg object-cover border border-gray-200"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold text-gray-800">Preview Gambar</p>
+                      <p className="text-[10px] text-gray-500 mt-0.5 truncate">
+                        {product.image_url.startsWith("data:") ? "Gambar lokal terunggah" : product.image_url}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setProduct({ ...product, image_url: "" })}
+                      className="text-xs font-bold text-red-500 hover:text-red-750 hover:bg-red-50 py-1 px-2.5 rounded-lg border border-red-200/50"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-4 hover:bg-gray-50 transition cursor-pointer relative group">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleProductImageUpload}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="text-center">
+                      <p className="text-xs font-semibold text-gray-650">Klik untuk upload file gambar</p>
+                      <p className="text-[10px] text-gray-400 mt-1">PNG, JPG, JPEG (Maks. 1.2MB)</p>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <div className="space-y-3">
+                  <input
+                    type="url"
+                    value={product.image_url.startsWith("data:") ? "" : product.image_url}
+                    onChange={(e) =>
+                      setProduct({
+                        ...product,
+                        image_url: e.target.value,
+                      })
+                    }
+                    placeholder="https://example.com/image.jpg"
+                    className="h-11 w-full rounded-lg border border-gray-300 px-3 outline-none focus:border-gray-500 text-sm"
                   />
+                  {product.image_url && !product.image_url.startsWith("data:") && (
+                    <div className="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-200">
+                      <img
+                        src={product.image_url}
+                        alt="Preview"
+                        className="h-14 w-14 rounded-lg object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-gray-500 truncate">
+                          {product.image_url}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setProduct({ ...product, image_url: "" })}
+                        className="text-xs font-bold text-red-500 hover:text-red-700 px-2 py-1 rounded-md hover:bg-red-50"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

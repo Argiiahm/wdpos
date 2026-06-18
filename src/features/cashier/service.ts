@@ -8,6 +8,9 @@ import type { OrderFull, OrderStatus } from "./types";
 export async function fetchOrders(
   statusFilter?: OrderStatus | "all",
 ): Promise<OrderFull[]> {
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  
   let query = supabase
     .from("orders")
     .select(
@@ -16,6 +19,7 @@ export async function fetchOrders(
       order_items (*)
     `,
     )
+    .gte("created_at", startOfToday.toISOString())
     .order("created_at", { ascending: false });
 
   if (statusFilter && statusFilter !== "all") {

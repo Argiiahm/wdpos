@@ -8,8 +8,9 @@ import {
 } from "lucide-react";
 import type { OrderFull, OrderStatus } from "../types";
 import { ORDER_STATUSES } from "../types";
-import { updateOrderStatus } from "../service";
 import { useState } from "react";
+import PaymentModal from "./PaymentModal";
+import { updateOrderStatus } from "../service";
 
 type OrderCardProps = {
   order: OrderFull;
@@ -19,6 +20,7 @@ type OrderCardProps = {
 
 const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
   const [loading, setLoading] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   const formatPrice = (p: number) => new Intl.NumberFormat("id-ID").format(p);
 
@@ -84,15 +86,11 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
         return (
           <div className="flex gap-2 mt-3">
             <button
-              onClick={() => handleStatusChange("done")}
+              onClick={() => setIsPaymentOpen(true)}
               disabled={loading}
               className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-green-600 px-3 py-2 text-xs font-medium text-white hover:bg-green-700 disabled:opacity-50 transition"
             >
-              {loading ? (
-                <Loader2 size={14} className="animate-spin" />
-              ) : (
-                <CheckCircle size={14} />
-              )}
+              <CheckCircle size={14} />
               Selesai
             </button>
           </div>
@@ -178,6 +176,13 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
         {/* Actions */}
         {getActions()}
       </div>
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={isPaymentOpen}
+        onClose={() => setIsPaymentOpen(false)}
+        order={order}
+        onPaymentSuccess={onStatusChange}
+      />
     </div>
   );
 };

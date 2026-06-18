@@ -7,6 +7,8 @@ import Login from "../features/auth/pages/Login";
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
 import ProtectedRoute from "./ProtectedRoute";
 import GuestOnly from "./GuestOnly";
+import SettingsPage from "../features/settings/pages/SettingsPage";
+import FinancePage from "../features/finance/pages/FinancePage";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,26 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <Layout>
           <Products />
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/settings",
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <SettingsPage />
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/finance",
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <FinancePage />
         </Layout>
       </ProtectedRoute>
     ),
