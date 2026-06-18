@@ -72,7 +72,7 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
 
       const blob = await toBlob(shareRef.current, {
         pixelRatio: 3, // Premium high-def resolution (no blur)
-        backgroundColor: isDark ? "#09090b" : "#f1f5f9",
+        backgroundColor: isDark ? "#09090b" : "#ffffff",
         width: 440,
         style: {
           transform: "scale(1)",
@@ -256,18 +256,16 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
         onClose={() => setIsPaymentOpen(false)}
         order={order}
         onPaymentSuccess={onStatusChange}
-      />
-
-      {/* Hidden wrapper to prevent visual display while maintaining layout/size for capture */}
+      />      {/* Hidden wrapper to prevent visual display while maintaining layout/size for capture */}
       <div style={{ position: "absolute", overflow: "hidden", width: 0, height: 0, pointerEvents: "none" }}>
         {/* Off-screen invoice for sharing */}
         <div
           ref={shareRef}
           style={{
             width: "440px",
-            backgroundColor: isDark ? "#09090b" : "#f1f5f9",
+            backgroundColor: isDark ? "#09090b" : "#f8fafc",
             backgroundImage: isDark
-              ? "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, sans-serif' font-weight='bold' font-size='9' fill='rgba(255,255,255,0.035)'%3ETRX%3C/text%3E%3C/svg%3E\")"
+              ? "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, sans-serif' font-weight='bold' font-size='9' fill='rgba(255,255,255,0.02)'%3ETRX%3C/text%3E%3C/svg%3E\")"
               : "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, sans-serif' font-weight='bold' font-size='9' fill='rgba(15,23,42,0.025)'%3ETRX%3C/text%3E%3C/svg%3E\")",
             backgroundSize: "60px 30px",
           }}
@@ -275,67 +273,109 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
         >
           {/* Captured card - structurally and visually identical to the live card */}
           <div
-            className={`border rounded-2xl p-6 w-full shadow-2xl transition flex flex-col justify-between ${isDark
-              ? "bg-[#18181b] border-zinc-800 text-zinc-100"
-              : "bg-white border-zinc-200/80 text-zinc-900 shadow-[0_20px_50px_rgba(15,23,42,0.05)]"
-              }`}
+            className={`relative border-0 rounded-t-2xl p-6 pb-8 w-full shadow-2xl transition flex flex-col justify-between ${
+              isDark
+                ? "bg-[#18181b] text-zinc-100"
+                : "bg-white text-zinc-900"
+            }`}
           >
-            <div>
-              {/* Header - Redesigned to show date instead of status */}
-              <div className={`flex items-start justify-between mb-4 pb-3 border-b ${isDark ? "border-zinc-800" : "border-zinc-100"}`}>
-                <div>
-
-                  <span className="text-sm font-extrabold font-mono tracking-tight text-zinc-900 dark:text-zinc-100">
-                    PES-{formatTime(order.created_at)}
-                  </span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-zinc-500 dark:text-zinc-400 block">
-                    DATE / TIME
-                  </span>
-                  <span className="text-xs font-semibold font-mono text-zinc-700 dark:text-zinc-300">
-                    {formatDate(order.created_at)} • {formatTime(order.created_at)}
-                  </span>
-                </div>
-              </div>
-
-              {/* Order Items */}
-              <div className="space-y-2 max-h-48 overflow-y-auto no-scrollbar">
-                {order.order_items.map((item) => (
-                  <div key={item.id} className={`border-b pb-2 ${isDark ? "border-zinc-800/40" : "border-zinc-100"}`}>
-                    <div className="flex items-start justify-between gap-4">
-                      <span className="font-semibold text-sm text-zinc-800 dark:text-zinc-100">{item.product_name}</span>
-                      {!item.product_name.toLowerCase().includes("ongkir") && (
-                        <div className="flex items-center shrink-0 mt-0.5">
-                          <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono font-medium w-8">{item.qty}x</span>
-                          <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 font-mono w-24 text-right">
-                            Rp {formatPrice(item.price * item.qty)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    {item.variant_name && (
-                      <span className="text-xs text-zinc-450 dark:text-zinc-500">{item.variant_name}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Wavy bottom edge */}
+            <div
+              className="absolute left-0 right-0 -bottom-[7px] h-[8px] bg-repeat-x z-10"
+              style={{
+                backgroundImage: isDark
+                  ? "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 0c2 0 4 4 4 4s2 4 4 4 4-4 4-4 2-4 4-4v8H0z' fill='%2309090b'/%3E%3C/svg%3E\")"
+                  : "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 0c2 0 4 4 4 4s2 4 4 4 4-4 4-4 2-4 4-4v8H0z' fill='%23f8fafc'/%3E%3C/svg%3E\")",
+              }}
+            />
 
             <div>
-              {/* Total */}
-              <div className={`flex items-center justify-between mt-3 pt-2 border-t ${isDark ? "border-zinc-800" : "border-zinc-100"}`}>
-                <span className="text-sm text-zinc-500 dark:text-zinc-400">Subtotal</span>
-                <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100 font-mono">
+              {/* Brand Header */}
+              <div className="flex flex-col items-center justify-center mb-6 pt-2">
+                <img
+                  src="/image/wd.png"
+                  alt="Logo Warung Dadakan"
+                  className="w-14 h-14 object-contain rounded-2xl shadow-sm mb-2"
+                />
+                <span className="text-xl font-bold tracking-tight text-emerald-950 dark:text-emerald-400">
+                  Warung Dadakan
+                </span>
+              </div>
+
+              {/* Date & Trans ID */}
+              <div className="flex justify-between items-center text-xs text-zinc-455 dark:text-zinc-500 mb-4 px-1">
+                <span>{formatDate(order.created_at)} • {formatTime(order.created_at)}</span>
+                <span className="font-semibold font-mono">PES-{formatTime(order.created_at)}</span>
+              </div>
+
+              {/* Dashed Line */}
+              <div className="border-t border-dashed border-zinc-200 dark:border-zinc-800/80 my-4" />
+
+              {/* Status */}
+              <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-500 mb-4 px-1">
+                <CheckCircle size={16} className="text-emerald-600 dark:text-emerald-500" />
+                <span>Transaksi Berhasil!</span>
+              </div>
+
+              {/* Total Bayar Box */}
+              <div
+                className={`rounded-xl p-4 flex justify-between items-center mb-5 ${
+                  isDark
+                    ? "bg-emerald-950/10 border border-emerald-900/20 text-emerald-100"
+                    : "bg-emerald-50/70 border border-emerald-100/50 text-emerald-950"
+                }`}
+              >
+                <span className="text-sm font-medium">Total Bayar</span>
+                <span className="text-xl font-extrabold font-mono">
                   Rp {formatPrice(order.total_price)}
                 </span>
               </div>
 
-              {/* Footer - Time */}
-              <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 mt-2.5">
-                <Clock size={12} className="text-green-500" />
-                <span className="text-xs font-mono">
-                  {formatDate(order.created_at)} • {formatTime(order.created_at)}
+              {/* Detail Pesanan */}
+              <div className="px-1">
+                <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 tracking-wider block mb-3 uppercase">
+                  Detail Pesanan
+                </span>
+
+                {/* Order Items */}
+                <div className="space-y-3 max-h-48 overflow-y-auto no-scrollbar">
+                  {order.order_items.map((item) => (
+                    <div key={item.id} className="pb-1">
+                      <div className="flex items-start justify-between gap-4">
+                        <span className="font-semibold text-sm text-zinc-800 dark:text-zinc-100">
+                          {item.product_name}
+                        </span>
+                        {!item.product_name.toLowerCase().includes("ongkir") && (
+                          <div className="flex items-center shrink-0 mt-0.5">
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono font-medium w-8">
+                              {item.qty}x
+                            </span>
+                            <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-100 font-mono w-24 text-right">
+                              Rp {formatPrice(item.price * item.qty)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      {item.variant_name && (
+                        <span className="text-xs text-zinc-450 dark:text-zinc-500 block mt-0.5">
+                          {item.variant_name}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              {/* Dashed Line */}
+              <div className="border-t border-dashed border-zinc-200 dark:border-zinc-800/80 my-4" />
+
+              {/* Footer text */}
+              <div className="flex flex-col items-center justify-center text-center text-xs text-zinc-400 dark:text-zinc-500 gap-1">
+                <span>Ditenagai oleh Warung Dadakan</span>
+                <span className="text-[10px] font-mono">
+                  ID: {order.id.slice(0, 8).toUpperCase()}...
                 </span>
               </div>
             </div>
