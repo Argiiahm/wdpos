@@ -336,7 +336,7 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
                 </span>
 
                 {/* Order Items */}
-                <div className="space-y-3 max-h-48 overflow-y-auto no-scrollbar">
+                <div className="space-y-3">
                   {order.order_items.map((item) => (
                     <div key={item.id} className="pb-1">
                       <div className="flex items-start justify-between gap-4">
