@@ -1,6 +1,7 @@
 import { Loader2, Receipt, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { deleteOrder, fetchOrders } from "../service";
+import type { DateFilterType } from "../service";
 import type { OrderFull, OrderStatus } from "../types";
 import { ORDER_STATUSES } from "../types";
 import OrderCard from "../components/OrderCard";
@@ -22,6 +23,7 @@ const CashierPage = () => {
 
   // Filter state
   const [activeFilter, setActiveFilter] = useState<OrderStatus | "all">("all");
+  const [dateFilter, setDateFilter] = useState<DateFilterType>("today");
 
   // Delete state
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -33,11 +35,11 @@ const CashierPage = () => {
   // ==============================
 
   const loadOrders = useCallback(
-    async (filter?: OrderStatus | "all") => {
+    async (status?: OrderStatus | "all", date?: DateFilterType) => {
       setLoading(true);
       setError(null);
       try {
-        const data = await fetchOrders(filter ?? activeFilter);
+        const data = await fetchOrders(status ?? activeFilter, date ?? dateFilter);
         setOrders(data);
       } catch (err) {
         const message =
@@ -47,7 +49,7 @@ const CashierPage = () => {
         setLoading(false);
       }
     },
-    [activeFilter],
+    [activeFilter, dateFilter],
   );
 
   useEffect(() => {
@@ -106,19 +108,51 @@ const CashierPage = () => {
   return (
     <section>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-2 text-zinc-500">
           <Receipt size={22} />
           <h1 className="font-semibold text-lg">Kasir — Pesanan</h1>
         </div>
-        <button
-          onClick={() => loadOrders()}
-          disabled={loading}
-          className="flex items-center gap-2 rounded-lg border border-zinc-200 px-3 py-1.5 text-sm text-zinc-500 hover:bg-zinc-50 transition disabled:opacity-50"
-        >
-          <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
-          Refresh
-        </button>
+
+        <div className="flex items-center gap-3">
+          {/* Date Filter Segmented Control */}
+          <div className="flex rounded-lg border border-zinc-200 dark:border-zinc-800 p-0.5 bg-zinc-50 dark:bg-zinc-900/50">
+            {(["today", "yesterday", "all"] as const).map((filter) => {
+              const label =
+                filter === "today"
+                  ? "Hari Ini"
+                  : filter === "yesterday"
+                    ? "Kemarin"
+                    : "Semua Hari";
+              const isActive = dateFilter === filter;
+              return (
+                <button
+                  key={filter}
+                  onClick={() => {
+                    setDateFilter(filter);
+                    loadOrders(activeFilter, filter);
+                  }}
+                  className={`px-3 py-1 text-xs font-medium rounded-md transition ${
+                    isActive
+                      ? "bg-white dark:bg-zinc-800 text-zinc-800 dark:text-white shadow-sm border border-zinc-200/50 dark:border-zinc-700/50"
+                      : "text-zinc-500 hover:text-zinc-800 dark:hover:text-white border border-transparent"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={() => loadOrders()}
+            disabled={loading}
+            className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 text-sm text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition disabled:opacity-50"
+          >
+            <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* Status Filter Tabs */}
@@ -181,7 +215,11 @@ const CashierPage = () => {
           <Receipt size={48} className="mb-3 text-zinc-300" />
           <p className="text-sm font-medium">
             {activeFilter === "all"
-              ? "Belum ada pesanan aktif hari ini."
+              ? dateFilter === "today"
+                ? "Belum ada pesanan aktif hari ini."
+                : dateFilter === "yesterday"
+                  ? "Tidak ada pesanan aktif kemarin."
+                  : "Belum ada pesanan aktif."
               : `Tidak ada pesanan dengan status "${statusFilters.find((f) => f.key === activeFilter)?.label}".`}
           </p>
         </div>

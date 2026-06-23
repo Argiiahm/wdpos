@@ -213,14 +213,12 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
             <div key={item.id} className="border-b border-zinc-100 dark:border-zinc-800/40 pb-2">
               <div className="flex items-start justify-between gap-4">
                 <span className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{item.product_name}</span>
-                {!item.product_name.toLowerCase().includes("ongkir") && (
-                  <div className="flex items-center shrink-0 mt-0.5">
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono font-medium w-8">{item.qty}x</span>
-                    <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 font-mono w-24 text-right">
-                      Rp {formatPrice(item.price * item.qty)}
-                    </span>
-                  </div>
-                )}
+                <div className="flex items-center shrink-0 mt-0.5">
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono font-medium w-8">{item.qty}x</span>
+                  <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 font-mono w-24 text-right">
+                    Rp {formatPrice(item.price * item.qty)}
+                  </span>
+                </div>
               </div>
               {item.variant_name && (
                 <span className="text-xs text-zinc-400 dark:text-zinc-500">{item.variant_name}</span>
@@ -345,16 +343,14 @@ const OrderCard = ({ order, onStatusChange, onDelete }: OrderCardProps) => {
                         <span className="font-semibold text-sm text-zinc-800 dark:text-zinc-100">
                           {item.product_name}
                         </span>
-                        {!item.product_name.toLowerCase().includes("ongkir") && (
-                          <div className="flex items-center shrink-0 mt-0.5">
-                            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono font-medium w-8">
-                              {item.qty}x
-                            </span>
-                            <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-100 font-mono w-24 text-right">
-                              Rp {formatPrice(item.price * item.qty)}
-                            </span>
-                          </div>
-                        )}
+                        <div className="flex items-center shrink-0 mt-0.5">
+                          <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono font-medium w-8">
+                            {item.qty}x
+                          </span>
+                          <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-100 font-mono w-24 text-right">
+                            Rp {formatPrice(item.price * item.qty)}
+                          </span>
+                        </div>
                       </div>
                       {item.variant_name && (
                         <span className="text-xs text-zinc-450 dark:text-zinc-500 block mt-0.5">

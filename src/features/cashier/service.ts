@@ -5,12 +5,12 @@ import type { OrderFull, OrderStatus } from "./types";
 // FETCH ORDERS
 // ==============================
 
+export type DateFilterType = "today" | "yesterday" | "all";
+
 export async function fetchOrders(
   statusFilter?: OrderStatus | "all",
+  dateFilter: DateFilterType = "today",
 ): Promise<OrderFull[]> {
-  const startOfToday = new Date();
-  startOfToday.setHours(0, 0, 0, 0);
-  
   let query = supabase
     .from("orders")
     .select(
@@ -19,8 +19,25 @@ export async function fetchOrders(
       order_items (*)
     `,
     )
-    .gte("created_at", startOfToday.toISOString())
     .order("created_at", { ascending: false });
+
+  if (dateFilter === "today") {
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    query = query.gte("created_at", startOfToday.toISOString());
+  } else if (dateFilter === "yesterday") {
+    const startOfYesterday = new Date();
+    startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+    startOfYesterday.setHours(0, 0, 0, 0);
+
+    const endOfYesterday = new Date();
+    endOfYesterday.setDate(endOfYesterday.getDate() - 1);
+    endOfYesterday.setHours(23, 59, 59, 999);
+
+    query = query
+      .gte("created_at", startOfYesterday.toISOString())
+      .lte("created_at", endOfYesterday.toISOString());
+  }
 
   if (statusFilter && statusFilter !== "all") {
     query = query.eq("status", statusFilter);
